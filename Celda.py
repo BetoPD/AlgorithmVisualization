@@ -1,7 +1,7 @@
 import pygame
 import numpy as np
 
-
+DIAGONAL = False
 class Celda:
     def __init__(self, x, y):
         self.x = x
@@ -45,5 +45,16 @@ class Celda:
             self.vecinos.append(celdas[self.y - 1][self.x])
         if self.y < len(celdas) - 1:
             self.vecinos.append(celdas[self.y + 1][self.x])
+
+        if DIAGONAL:
+            if self.x > 0 and self.y > 0:
+                self.vecinos.append(celdas[self.y - 1][self.x - 1])
+            if self.x < len(celdas) - 1 and self.y > 0:
+                self.vecinos.append(celdas[self.y - 1][self.x + 1])
+            if self.x > 0 and self.y < len(celdas) - 1:
+                self.vecinos.append(celdas[self.y + 1][self.x - 1])
+            if self.x < len(celdas) - 1 and self.y < len(celdas) - 1:
+                self.vecinos.append(celdas[self.y + 1][self.x + 1])
+        
 
 
