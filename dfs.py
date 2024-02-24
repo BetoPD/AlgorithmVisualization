@@ -73,7 +73,6 @@ while True:
         if stack:
             current = stack.pop()
             current.visited = True
-            current.frontera = True
 
             if current.target:
                 path = current
@@ -83,6 +82,7 @@ while True:
                 if not neighbor.visited and not neighbor.muro:
                     stack.append(neighbor)
                     neighbor.previo = current
+                    neighbor.frontera = True
         
         seconds = (pygame.time.get_ticks() - start_ticks) // 1000
         timer_text = font.render(str(seconds), True, pygame.Color("green"))

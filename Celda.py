@@ -27,10 +27,10 @@ class Celda:
             pygame.draw.rect(ventana, pygame.Color('yellow'), (x, y, cuadro - 2, cuadro - 2 ))
         elif self.inicial:
             pygame.draw.rect(ventana, pygame.Color('orange'), (x, y, cuadro - 2, cuadro - 2 ))
+        elif self.frontera and not self.visited:
+            pygame.draw.rect(ventana, pygame.Color('red'), (x, y, cuadro - 2, cuadro - 2 ))
         elif self.visited:
             pygame.draw.rect(ventana, pygame.Color('purple'), (x, y, cuadro - 2, cuadro - 2 ))
-        elif self.frontera:
-            pygame.draw.rect(ventana, pygame.Color('red'), (x, y, cuadro - 2, cuadro - 2 ))
         elif self.muro:
             pygame.draw.rect(ventana, pygame.Color('black'), (x, y, cuadro - 2, cuadro - 2 ))
         else:

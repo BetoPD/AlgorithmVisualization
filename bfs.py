@@ -85,6 +85,7 @@ while True:
                 if not vecino.visited and not vecino.muro:
                     queue.insert(0, vecino)
                     vecino.previo = current
+                    vecino.frontera = True
 
 
         
