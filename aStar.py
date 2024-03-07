@@ -1,5 +1,4 @@
 import pygame
-import time
 from Celda import Celda
 
 # Configuración de la ventanana en pygame
@@ -17,7 +16,7 @@ col, filas = ANCHO // CUADRO, ALTO // CUADRO
 
 pygame.init()
 ventana = pygame.display.set_mode(RES)
-pygame.display.set_caption("Dijkstra")
+pygame.display.set_caption("A*")
 reloj = pygame.time.Clock()
 font = pygame.font.Font(None, 50)
 
@@ -32,12 +31,19 @@ for fila in celdas:
         celda.setVecinos(celdas)
 
 # Configuracion del algoritmo
+def manhattan(currentCell: Celda, goalCell: Celda):
+    return abs(currentCell.x - goalCell.x) + abs(currentCell.y - goalCell.y)
+
+def euclidean(currentCell: Celda, goalCell: Celda):
+    return ((currentCell.x - goalCell.x) ** 2 + (currentCell.y - goalCell.y) ** 2) ** 0.5
+
         
 celdas[0][0].inicial = True
 celdas[0][0].distancia = 0
 priority_queue = [celdas[0][0]]
 
 # Ejecuta la ventana, en un while loop, por lo que no es necesario que el algoritmo este en un while dentro de este while
+target = None
 
 while True:
     ventana.fill(pygame.Color("black"))
@@ -63,6 +69,8 @@ while True:
 
             if event.button == 3 and not start:
                 celdas[y][x].target = True
+                target = celdas[y][x]
+                celdas[0][0].f = manhattan(celdas[0][0], celdas[y][x])
                 start = True
                 start_ticks = pygame.time.get_ticks()
 
@@ -76,7 +84,7 @@ while True:
 
         if priority_queue:
             # como la priority queue es de objetos, en vez de números, podemos indicarle por que atributo del objeto ordenar la lista
-            priority_queue.sort(key=lambda x: x.distancia)
+            priority_queue.sort(key=lambda x: x.f)
             current = priority_queue.pop(0)
             current.visited = True
 
@@ -89,12 +97,15 @@ while True:
 
             for vecino in current.vecinos:
                 if not vecino.visited and not vecino.muro:
-                    distancia_nueva = current.distancia + 1
-                    if distancia_nueva < vecino.distancia:
+                    g = current.distancia + 1
+                    f = g + manhattan(vecino, target)
+                    if f < vecino.f:
                         vecino.previo = current
-                        vecino.distancia = distancia_nueva
+                        vecino.f = f
+                        vecino.distancia = g
                         priority_queue.append(vecino)
                         vecino.frontera = True
+                    
         
         # Contador 
         seconds = (pygame.time.get_ticks() - start_ticks) // 1000
@@ -115,4 +126,5 @@ while True:
 
 
     pygame.display.flip()
-    reloj.tick(60)
+    reloj.tick(120)
+

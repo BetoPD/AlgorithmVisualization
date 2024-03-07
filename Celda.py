@@ -1,7 +1,7 @@
 import pygame
 import numpy as np
 
-DIAGONAL = False
+DIAGONAL = True
 class Celda:
     def __init__(self, x, y):
         self.x = x
@@ -14,6 +14,7 @@ class Celda:
         self.frontera = False
         self.visited = False
         self.distancia = np.Infinity
+        self.f = np.Infinity
         self.vecinos = []
 
     def dibujarme(self, ventana, cuadro):
